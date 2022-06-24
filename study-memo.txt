@@ -1,0 +1,8 @@
+#1. Server Setup
+
+- install express & pug
+- install "babel/core" and create babel.config.json file 
+- install nodemon and create nodemon.json
+
+* if error "nodemon: command not found" occurs add command npx. "npx nodemon" 
+
