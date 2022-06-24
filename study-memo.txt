@@ -6,3 +6,13 @@
 
 * if error "nodemon: command not found" occurs add command npx. "npx nodemon" 
 
+#2. Frontend Setup
+
+- create folder __dirname/views for pug & __dirname/public for js & css
+- set view engine and path of views
+- use __dirname/public as express static folder
+
+* let ignore nodemon the frontend changes adding "ignore" to nodemon.json
+
+
+
