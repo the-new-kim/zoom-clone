@@ -14,5 +14,8 @@
 
 * let ignore nodemon the frontend changes adding "ignore" to nodemon.json
 
+#3. WebSockets in NodeJs
+
+- install ws
 
 
