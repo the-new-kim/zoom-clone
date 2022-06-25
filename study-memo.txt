@@ -17,5 +17,12 @@
 #3. WebSockets in NodeJs
 
 - install ws
+- create http server & websocket server
+
+#4. Websocket Events
+
+- just like normal js events
+
+
 
 
