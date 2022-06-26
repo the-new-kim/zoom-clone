@@ -11,14 +11,12 @@ html(lang="en")
             h1 Zoom Clone 
         main
             h1 Welcome
+            #welcome
+                form(action="") 
+                    input(type="text", placeholder="Room name", required)
+                    button Enter Room
+
+
             
-            form.nickname(action="") 
-                input(type="text", placeholder="Enter your Nickname", required)
-                button Save
-
-
-            ul
-            form.message(action="")
-                input(type="text", placeholder="Write Message", required) 
-                button Send
+        script(src="/socket.io/socket.io.js") 
         script(src="/public/js/app.js") 

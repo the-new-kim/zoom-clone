@@ -41,3 +41,10 @@
 
 * send JSON to backend rather than a specific program language 
 in order to prevent uncompatibility between different program languages
+
+=======================================================================================
+
+#8. Socket.io
+
+- install socket.io and set server (no ws more)
+* in frontend declared function can be excuted in backend and can send returned value to the front again

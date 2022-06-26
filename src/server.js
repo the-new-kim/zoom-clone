@@ -1,5 +1,5 @@
 import http from "http";
-import { WebSocket } from "ws";
+import SocketIO from "socket.io";
 import express from "express";
 
 const app = express();
@@ -13,44 +13,19 @@ app.use("/public", express.static(__dirname + "/public"));
 app.get("/", (_, res) => res.render("home"));
 app.get("/*", (_, res) => res.redirect("/"));
 
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 
-const wss = new WebSocket.Server({ server });
+const wsServer = SocketIO(httpServer);
 
-const sockets = [];
-
-wss.on("connection", (socket) => {
-  console.log("Connected to Browser✅");
-  sockets.push(socket);
-  socket["nickname"] = "Anonymous";
-  console.log(sockets.length);
-  socket.on("close", () => {
-    console.log("Disconnected from the Browser❌");
-  });
-
-  ///////////////// this is for old version ws
-  // socket.on("message", (message) => {
-  //   console.log("Message from Browser: ", message);
-  // });
-
-  //////////////// for new version
-  //https://github.com/websockets/ws/releases/tag/8.0.0
-  socket.on("message", (data, isBinary) => {
-    const message = isBinary ? data : data.toString();
-    const parsedMessage = JSON.parse(message);
-
-    switch (parsedMessage.type) {
-      case "new_message":
-        return sockets.forEach((aSocket) =>
-          aSocket.send(`${socket.nickname}: ${parsedMessage.payload}`)
-        );
-
-      case "nickname":
-        return (socket["nickname"] = parsedMessage.payload);
-    }
+wsServer.on("connection", (socket) => {
+  socket.on("room_enter", (roomName, callback) => {
+    console.log(roomName);
+    setTimeout(() => {
+      callback("hello! i am back!");
+    }, 3000);
   });
 });
 
-server.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`🚀Listening on http://localhost:${PORT} 🚀`);
 });
