@@ -23,6 +23,10 @@
 
 - just like normal js events
 
+#5. Websocket Messages
 
+- send messages between front & back-end interactively.
+
+* change log for ws version 8 - https://github.com/websockets/ws/releases/tag/8.0.0 
 
 
