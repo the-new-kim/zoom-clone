@@ -17,11 +17,16 @@ const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
 
+const sockets = [];
+
 wss.on("connection", (socket) => {
   console.log("Connected to Browser✅");
+  sockets.push(socket);
+  console.log(sockets.length);
   socket.on("close", () => {
     console.log("Disconnected from the Browser❌");
   });
+
   ///////////////// this is for old version ws
   // socket.on("message", (message) => {
   //   console.log("Message from Browser: ", message);
@@ -31,10 +36,8 @@ wss.on("connection", (socket) => {
   //https://github.com/websockets/ws/releases/tag/8.0.0
   socket.on("message", (data, isBinary) => {
     const message = isBinary ? data : data.toString();
-    console.log(message);
+    sockets.forEach((aSocket) => aSocket.send(message));
   });
-
-  socket.send("hi");
 });
 
 server.listen(PORT, () => {

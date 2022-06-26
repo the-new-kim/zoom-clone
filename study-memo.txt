@@ -29,4 +29,7 @@
 
 * change log for ws version 8 - https://github.com/websockets/ws/releases/tag/8.0.0 
 
+#6. Chat completed
+
+- create fake database and send message to each sockets.
 
