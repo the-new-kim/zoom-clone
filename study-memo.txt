@@ -33,3 +33,11 @@
 
 - create fake database and send message to each sockets.
 
+#7. Nicknames
+
+- frontend: send messages to backend using form
+- backend: handle recieved messages and send it to the frontend back
+- frontend: paint messages from backend
+
+* send JSON to backend rather than a specific program language 
+in order to prevent uncompatibility between different program languages

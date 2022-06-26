@@ -11,7 +11,14 @@ html(lang="en")
             h1 Zoom Clone 
         main
             h1 Welcome
-            form(action="")
+            
+            form.nickname(action="") 
+                input(type="text", placeholder="Enter your Nickname", required)
+                button Save
+
+
+            ul
+            form.message(action="")
                 input(type="text", placeholder="Write Message", required) 
                 button Send
         script(src="/public/js/app.js") 

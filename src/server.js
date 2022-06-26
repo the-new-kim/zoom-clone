@@ -22,6 +22,7 @@ const sockets = [];
 wss.on("connection", (socket) => {
   console.log("Connected to Browser✅");
   sockets.push(socket);
+  socket["nickname"] = "Anonymous";
   console.log(sockets.length);
   socket.on("close", () => {
     console.log("Disconnected from the Browser❌");
@@ -36,7 +37,17 @@ wss.on("connection", (socket) => {
   //https://github.com/websockets/ws/releases/tag/8.0.0
   socket.on("message", (data, isBinary) => {
     const message = isBinary ? data : data.toString();
-    sockets.forEach((aSocket) => aSocket.send(message));
+    const parsedMessage = JSON.parse(message);
+
+    switch (parsedMessage.type) {
+      case "new_message":
+        return sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}: ${parsedMessage.payload}`)
+        );
+
+      case "nickname":
+        return (socket["nickname"] = parsedMessage.payload);
+    }
   });
 });
 
