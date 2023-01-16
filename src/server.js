@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import WebSocket from "ws";
+import SocketIO from "socket.io";
 
 const PORT = process.env.PORT || 4000;
 
@@ -16,30 +16,17 @@ app.use("/public", express.static(__dirname + "/public"));
 
 app.get("/", (req, res) => res.render("home"));
 
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const httpServer = http.createServer(app);
+const wsServer = SocketIO(httpServer);
 
-const sockets = [];
-
-wss.on("connection", (socket) => {
-  sockets.push(socket);
-  socket["nickname"] = "Anon";
-  console.log("SOCKETS:", sockets.length);
-  console.log("Connected to Browser");
-
-  socket.on("message", (data) => {
-    const message = JSON.parse(data);
-    console.log("MSG FROM BRSR: ", message);
-    console.log("SOCKET NICKNAME", socket["nickname"]);
-    switch (message.type) {
-      case "new_message":
-        sockets.forEach((aSocket) =>
-          aSocket.send(`${socket.nickname}: ${message.payload}`)
-        );
-      case "nickname":
-        socket.nickname = message.payload;
-    }
+wsServer.on("connection", (socket) => {
+  // socket.on("event_name_from_front", (payload, functionFromFront)=> {...})
+  socket.on("enter_room", (msg, done) => {
+    console.log(msg);
+    setTimeout(() => {
+      done("Server is Done😎");
+    }, 3000);
   });
 });
 
-server.listen(PORT, handleListening);
+httpServer.listen(PORT, handleListening);
