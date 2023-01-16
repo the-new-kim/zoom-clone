@@ -14,5 +14,14 @@ html(lang="en")
     body 
         main 
             h1 hello!
-            button click
+            
+            ul#messageUl
+            form#messageForm
+                input(type="text", placeholder="type message", required)
+                button Send
+            
+            form#nicknameForm
+                input(type="text", placeholder="nickname", required)
+                button Save
+
         script(src="/public/js/app.js") 

@@ -1,11 +1,39 @@
-console.log("Hello from public folddfdser!");
 const socket = new WebSocket(`ws://${window.location.host}`);
 
-console.log(socket);
+const messageForm = document.getElementById("messageForm");
+const nicknameForm = document.getElementById("nicknameForm");
+const messageUl = document.getElementById("messageUl");
 
-socket.addEventListener("open", () => console.log("Connected to Server"));
-socket.addEventListener("message", (message) =>
-  console.log("MESSAGE: ", message)
-);
+const makeMessage = (type, payload) => {
+  const message = { type, payload };
+  return JSON.stringify(message);
+};
 
-socket.addEventListener("close", () => console.log("Disconnected from server"));
+const handleSubmitMessage = (event) => {
+  event.preventDefault();
+  const input = messageForm.querySelector("input");
+  socket.send(makeMessage("new_message", input.value));
+  input.value = "";
+};
+
+const handleSubmitNickname = (event) => {
+  event.preventDefault();
+  const input = nicknameForm.querySelector("input");
+  socket.send(makeMessage("nickname", input.value));
+  input.value = "";
+};
+
+const handleOpen = () => console.log("Connected to Server");
+const handleClose = () => console.log("Disconnected from server");
+const handleMessage = (message) => {
+  const li = document.createElement("li");
+  li.innerText = message.data;
+  messageUl.append(li);
+};
+
+messageForm.addEventListener("submit", handleSubmitMessage);
+nicknameForm.addEventListener("submit", handleSubmitNickname);
+
+socket.addEventListener("open", handleOpen);
+socket.addEventListener("message", handleMessage);
+socket.addEventListener("close", handleClose);

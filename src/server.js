@@ -16,14 +16,30 @@ app.use("/public", express.static(__dirname + "/public"));
 
 app.get("/", (req, res) => res.render("home"));
 
-// app.listen(PORT, handleListening);
-
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+const sockets = [];
+
 wss.on("connection", (socket) => {
+  sockets.push(socket);
+  socket["nickname"] = "Anon";
+  console.log("SOCKETS:", sockets.length);
   console.log("Connected to Browser");
-  socket.send("hello");
+
+  socket.on("message", (data) => {
+    const message = JSON.parse(data);
+    console.log("MSG FROM BRSR: ", message);
+    console.log("SOCKET NICKNAME", socket["nickname"]);
+    switch (message.type) {
+      case "new_message":
+        sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}: ${message.payload}`)
+        );
+      case "nickname":
+        socket.nickname = message.payload;
+    }
+  });
 });
 
 server.listen(PORT, handleListening);
