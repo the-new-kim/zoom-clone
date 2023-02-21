@@ -1,5 +1,7 @@
 const socket = io();
 
+console.log(socket);
+
 const welcome = document.getElementById("welcome");
 const welcomeForm = welcome.querySelector("form");
 

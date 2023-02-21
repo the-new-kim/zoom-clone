@@ -12,25 +12,8 @@ html(lang="en")
 
 
     body 
+        a(href="/chat") Chat
         main 
-            #welcome 
-                form 
-                    input(type="text", placeholder="Room Name", required)
-                    button Enter Room
-                form#nickname
-                    input(type="text", placeholder="Nickname", required)
-                    button Save
-                #rooms 
-                    h4 
-                    ul
-            #room 
-                h3
-                ul 
-                form#msg
-                    input(type="text", placeholder="Write a message", required)
-                    button Send
+            h1 Home
                 
             
-
-        script(src="/socket.io/socket.io.js")
-        script(src="/public/js/app.js") 

@@ -2,10 +2,12 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import { instrument } from "@socket.io/admin-ui";
+import morgan from "morgan";
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+const logger = morgan("dev");
 
 // app.set("views", __dirname + "/views");
 const handleListening = () => {
@@ -14,8 +16,10 @@ const handleListening = () => {
 
 app.set("view engine", "pug");
 app.use("/public", express.static(__dirname + "/public"));
+app.use(logger);
 
 app.get("/", (req, res) => res.render("home"));
+app.get("/chat", (req, res) => res.render("chat"));
 
 const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer, {
@@ -51,6 +55,7 @@ function countRoom(roomName) {
 }
 
 wsServer.on("connection", (socket) => {
+  console.log("WS CONNECTED");
   socket["nickname"] = socket.nickname || "Anon";
   socket.emit("init_nickname", socket.nickname);
 
@@ -60,7 +65,11 @@ wsServer.on("connection", (socket) => {
 
   // socket.on("event_name_from_front", (payload, functionFromFront)=> {...})
   socket.on("enter_room", (roomName, done) => {
+    console.log("ROOMS:::::", socket.rooms);
+
     socket.join(roomName);
+
+    console.log("ROOMS:::::", socket.rooms);
 
     socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
     done(countRoom(roomName));
